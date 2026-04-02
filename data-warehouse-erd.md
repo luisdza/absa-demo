@@ -1,6 +1,6 @@
 # Data Warehouse ERD
 
-here[readme.md]
+This site was built using [GitHub Pages](readme.md).
 This document contains a high-level **Enterprise Data Warehouse ERD** represented in Mermaid.
 
 It models a typical analytics platform with:
