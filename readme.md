@@ -39,7 +39,7 @@ This creates a **closed loop of learning and optimisation**.
 flowchart TD
 
 %% Business Interaction
-User[Business User] -->|customer interaction| CRM[CRM System]
+User[A User] -->|customer interaction| CRM[CRM System]
 
 %% Enterprise Integration Layer
 CRM --> API[API Gateway]
@@ -75,3 +75,4 @@ class API,Svc integration
 class Core,Events platform
 class DW data
 class BI,AI analytics
+
