@@ -60,3 +60,18 @@ DW --> AI[AI / Recommendation Engine]
 %% Feedback loop
 BI -->|insights| User
 AI -->|next best action| CRM
+
+
+%% Layer Styling
+classDef business fill:#dae8fc,stroke:#6c8ebf,stroke-width:2px,color:#000
+classDef integration fill:#d5e8d4,stroke:#82b366,stroke-width:2px,color:#000
+classDef platform fill:#f8cecc,stroke:#b85450,stroke-width:2px,color:#000
+classDef data fill:#fff2cc,stroke:#d6b656,stroke-width:2px,color:#000
+classDef analytics fill:#e1d5e7,stroke:#9673a6,stroke-width:2px,color:#000
+
+%% Apply classes
+class User,CRM business
+class API,Svc integration
+class Core,Events platform
+class DW data
+class BI,AI analytics
