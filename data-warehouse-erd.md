@@ -15,6 +15,23 @@ The example below is suitable for demos involving banking, CRM, sales, and custo
 ---
 
 ## Mermaid ERD
+# Data Warehouse ERD
+
+This document contains a high-level **Enterprise Data Warehouse ERD** represented in Mermaid.
+
+It models a typical analytics platform with:
+
+- conformed dimensions
+- transactional fact tables
+- periodic snapshot facts
+- reference dimensions
+- audit and batch tracking
+
+The example below is suitable for demos involving banking, CRM, sales, and customer analytics.
+
+---
+
+## Mermaid ERD
 
 ```mermaid
 erDiagram
@@ -36,7 +53,7 @@ erDiagram
 
     DIM_CUSTOMER {
         bigint customer_key PK
-        string customer_id NK
+        string customer_id UK
         string first_name
         string last_name
         string gender
@@ -54,7 +71,7 @@ erDiagram
 
     DIM_ACCOUNT {
         bigint account_key PK
-        string account_id NK
+        string account_id UK
         string account_number
         string account_type
         string product_code
@@ -71,7 +88,7 @@ erDiagram
 
     DIM_PRODUCT {
         bigint product_key PK
-        string product_code NK
+        string product_code UK
         string product_name
         string product_family
         string product_category
@@ -84,7 +101,7 @@ erDiagram
 
     DIM_BRANCH {
         bigint branch_key PK
-        string branch_code NK
+        string branch_code UK
         string branch_name
         string region_name
         string province_name
@@ -95,7 +112,7 @@ erDiagram
 
     DIM_CHANNEL {
         bigint channel_key PK
-        string channel_code NK
+        string channel_code UK
         string channel_name
         string channel_group
         string assisted_flag
@@ -104,7 +121,7 @@ erDiagram
 
     DIM_EMPLOYEE {
         bigint employee_key PK
-        string employee_id NK
+        string employee_id UK
         string employee_name
         string job_title
         string department_name
@@ -115,7 +132,7 @@ erDiagram
 
     DIM_CURRENCY {
         int currency_key PK
-        string currency_code NK
+        string currency_code UK
         string currency_name
         string symbol
         int decimal_places
@@ -133,7 +150,7 @@ erDiagram
 
     DIM_GL_ACCOUNT {
         bigint gl_account_key PK
-        string gl_account_code NK
+        string gl_account_code UK
         string gl_account_name
         string gl_category
         string gl_subcategory
@@ -143,7 +160,7 @@ erDiagram
 
     DIM_TRANSACTION_TYPE {
         bigint transaction_type_key PK
-        string transaction_type_code NK
+        string transaction_type_code UK
         string transaction_type_name
         string transaction_group
         string debit_credit_indicator
@@ -153,7 +170,7 @@ erDiagram
 
     DIM_LOAN {
         bigint loan_key PK
-        string loan_id NK
+        string loan_id UK
         string loan_type
         decimal approved_amount
         decimal interest_rate
@@ -167,7 +184,7 @@ erDiagram
 
     DIM_CARD {
         bigint card_key PK
-        string card_id NK
+        string card_id UK
         string card_number_masked
         string card_type
         string network
@@ -178,7 +195,7 @@ erDiagram
 
     DIM_CAMPAIGN {
         bigint campaign_key PK
-        string campaign_id NK
+        string campaign_id UK
         string campaign_name
         string campaign_type
         string start_date
@@ -189,7 +206,7 @@ erDiagram
 
     DIM_BATCH {
         bigint batch_key PK
-        string batch_id NK
+        string batch_id UK
         datetime load_start_ts
         datetime load_end_ts
         string source_system
@@ -211,7 +228,7 @@ erDiagram
 
     FACT_TRANSACTION {
         bigint transaction_fact_key PK
-        bigint transaction_id NK
+        bigint transaction_id UK
         int transaction_date_key FK
         bigint customer_key FK
         bigint account_key FK
@@ -264,7 +281,7 @@ erDiagram
 
     FACT_CARD_TRANSACTION {
         bigint card_transaction_fact_key PK
-        bigint card_transaction_id NK
+        bigint card_transaction_id UK
         int transaction_date_key FK
         bigint customer_key FK
         bigint account_key FK
@@ -282,7 +299,7 @@ erDiagram
 
     FACT_CUSTOMER_INTERACTION {
         bigint interaction_fact_key PK
-        bigint interaction_id NK
+        bigint interaction_id UK
         int interaction_date_key FK
         bigint customer_key FK
         bigint employee_key FK
@@ -298,7 +315,7 @@ erDiagram
 
     FACT_GL_POSTING {
         bigint gl_posting_fact_key PK
-        bigint posting_id NK
+        bigint posting_id UK
         int posting_date_key FK
         bigint gl_account_key FK
         bigint branch_key FK
@@ -325,63 +342,64 @@ erDiagram
         decimal total_exposure
     }
 
-    DIM_DATE ||--o{ FACT_TRANSACTION : "transaction_date_key"
-    DIM_CUSTOMER ||--o{ FACT_TRANSACTION : "customer_key"
-    DIM_ACCOUNT ||--o{ FACT_TRANSACTION : "account_key"
-    DIM_PRODUCT ||--o{ FACT_TRANSACTION : "product_key"
-    DIM_BRANCH ||--o{ FACT_TRANSACTION : "branch_key"
-    DIM_CHANNEL ||--o{ FACT_TRANSACTION : "channel_key"
-    DIM_CURRENCY ||--o{ FACT_TRANSACTION : "currency_key"
-    DIM_TRANSACTION_TYPE ||--o{ FACT_TRANSACTION : "transaction_type_key"
-    DIM_BATCH ||--o{ FACT_TRANSACTION : "batch_key"
+    DIM_DATE ||--o{ FACT_TRANSACTION : transaction_date_key
+    DIM_CUSTOMER ||--o{ FACT_TRANSACTION : customer_key
+    DIM_ACCOUNT ||--o{ FACT_TRANSACTION : account_key
+    DIM_PRODUCT ||--o{ FACT_TRANSACTION : product_key
+    DIM_BRANCH ||--o{ FACT_TRANSACTION : branch_key
+    DIM_CHANNEL ||--o{ FACT_TRANSACTION : channel_key
+    DIM_CURRENCY ||--o{ FACT_TRANSACTION : currency_key
+    DIM_TRANSACTION_TYPE ||--o{ FACT_TRANSACTION : transaction_type_key
+    DIM_BATCH ||--o{ FACT_TRANSACTION : batch_key
 
-    DIM_DATE ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "date_key"
-    DIM_CUSTOMER ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "customer_key"
-    DIM_ACCOUNT ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "account_key"
-    DIM_PRODUCT ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "product_key"
-    DIM_BRANCH ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "branch_key"
-    DIM_CURRENCY ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "currency_key"
-    DIM_BATCH ||--o{ FACT_ACCOUNT_BALANCE_DAILY : "batch_key"
+    DIM_DATE ||--o{ FACT_ACCOUNT_BALANCE_DAILY : date_key
+    DIM_CUSTOMER ||--o{ FACT_ACCOUNT_BALANCE_DAILY : customer_key
+    DIM_ACCOUNT ||--o{ FACT_ACCOUNT_BALANCE_DAILY : account_key
+    DIM_PRODUCT ||--o{ FACT_ACCOUNT_BALANCE_DAILY : product_key
+    DIM_BRANCH ||--o{ FACT_ACCOUNT_BALANCE_DAILY : branch_key
+    DIM_CURRENCY ||--o{ FACT_ACCOUNT_BALANCE_DAILY : currency_key
+    DIM_BATCH ||--o{ FACT_ACCOUNT_BALANCE_DAILY : batch_key
 
-    DIM_DATE ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "date_key"
-    DIM_CUSTOMER ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "customer_key"
-    DIM_ACCOUNT ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "account_key"
-    DIM_LOAN ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "loan_key"
-    DIM_PRODUCT ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "product_key"
-    DIM_BRANCH ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "branch_key"
-    DIM_CURRENCY ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "currency_key"
-    DIM_BATCH ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : "batch_key"
+    DIM_DATE ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : date_key
+    DIM_CUSTOMER ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : customer_key
+    DIM_ACCOUNT ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : account_key
+    DIM_LOAN ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : loan_key
+    DIM_PRODUCT ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : product_key
+    DIM_BRANCH ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : branch_key
+    DIM_CURRENCY ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : currency_key
+    DIM_BATCH ||--o{ FACT_LOAN_SNAPSHOT_MONTHLY : batch_key
 
-    DIM_DATE ||--o{ FACT_CARD_TRANSACTION : "transaction_date_key"
-    DIM_CUSTOMER ||--o{ FACT_CARD_TRANSACTION : "customer_key"
-    DIM_ACCOUNT ||--o{ FACT_CARD_TRANSACTION : "account_key"
-    DIM_CARD ||--o{ FACT_CARD_TRANSACTION : "card_key"
-    DIM_GEOGRAPHY ||--o{ FACT_CARD_TRANSACTION : "merchant_geography_key"
-    DIM_CHANNEL ||--o{ FACT_CARD_TRANSACTION : "channel_key"
-    DIM_CURRENCY ||--o{ FACT_CARD_TRANSACTION : "currency_key"
-    DIM_TRANSACTION_TYPE ||--o{ FACT_CARD_TRANSACTION : "transaction_type_key"
-    DIM_BATCH ||--o{ FACT_CARD_TRANSACTION : "batch_key"
+    DIM_DATE ||--o{ FACT_CARD_TRANSACTION : transaction_date_key
+    DIM_CUSTOMER ||--o{ FACT_CARD_TRANSACTION : customer_key
+    DIM_ACCOUNT ||--o{ FACT_CARD_TRANSACTION : account_key
+    DIM_CARD ||--o{ FACT_CARD_TRANSACTION : card_key
+    DIM_GEOGRAPHY ||--o{ FACT_CARD_TRANSACTION : merchant_geography_key
+    DIM_CHANNEL ||--o{ FACT_CARD_TRANSACTION : channel_key
+    DIM_CURRENCY ||--o{ FACT_CARD_TRANSACTION : currency_key
+    DIM_TRANSACTION_TYPE ||--o{ FACT_CARD_TRANSACTION : transaction_type_key
+    DIM_BATCH ||--o{ FACT_CARD_TRANSACTION : batch_key
 
-    DIM_DATE ||--o{ FACT_CUSTOMER_INTERACTION : "interaction_date_key"
-    DIM_CUSTOMER ||--o{ FACT_CUSTOMER_INTERACTION : "customer_key"
-    DIM_EMPLOYEE ||--o{ FACT_CUSTOMER_INTERACTION : "employee_key"
-    DIM_CHANNEL ||--o{ FACT_CUSTOMER_INTERACTION : "channel_key"
-    DIM_CAMPAIGN ||--o{ FACT_CUSTOMER_INTERACTION : "campaign_key"
-    DIM_BRANCH ||--o{ FACT_CUSTOMER_INTERACTION : "branch_key"
-    DIM_BATCH ||--o{ FACT_CUSTOMER_INTERACTION : "batch_key"
+    DIM_DATE ||--o{ FACT_CUSTOMER_INTERACTION : interaction_date_key
+    DIM_CUSTOMER ||--o{ FACT_CUSTOMER_INTERACTION : customer_key
+    DIM_EMPLOYEE ||--o{ FACT_CUSTOMER_INTERACTION : employee_key
+    DIM_CHANNEL ||--o{ FACT_CUSTOMER_INTERACTION : channel_key
+    DIM_CAMPAIGN ||--o{ FACT_CUSTOMER_INTERACTION : campaign_key
+    DIM_BRANCH ||--o{ FACT_CUSTOMER_INTERACTION : branch_key
+    DIM_BATCH ||--o{ FACT_CUSTOMER_INTERACTION : batch_key
 
-    DIM_DATE ||--o{ FACT_GL_POSTING : "posting_date_key"
-    DIM_GL_ACCOUNT ||--o{ FACT_GL_POSTING : "gl_account_key"
-    DIM_BRANCH ||--o{ FACT_GL_POSTING : "branch_key"
-    DIM_CURRENCY ||--o{ FACT_GL_POSTING : "currency_key"
-    DIM_PRODUCT ||--o{ FACT_GL_POSTING : "product_key"
-    DIM_BATCH ||--o{ FACT_GL_POSTING : "batch_key"
+    DIM_DATE ||--o{ FACT_GL_POSTING : posting_date_key
+    DIM_GL_ACCOUNT ||--o{ FACT_GL_POSTING : gl_account_key
+    DIM_BRANCH ||--o{ FACT_GL_POSTING : branch_key
+    DIM_CURRENCY ||--o{ FACT_GL_POSTING : currency_key
+    DIM_PRODUCT ||--o{ FACT_GL_POSTING : product_key
+    DIM_BATCH ||--o{ FACT_GL_POSTING : batch_key
 
-    DIM_DATE ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : "date_key"
-    DIM_CUSTOMER ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : "customer_key"
-    DIM_PRODUCT ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : "product_key"
-    DIM_BRANCH ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : "branch_key"
-    DIM_BATCH ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : "batch_key"
+    DIM_DATE ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : date_key
+    DIM_CUSTOMER ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : customer_key
+    DIM_PRODUCT ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : product_key
+    DIM_BRANCH ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : branch_key
+    DIM_BATCH ||--o{ FACT_CUSTOMER_PRODUCT_HOLDING : batch_key
 
-    DIM_CUSTOMER ||--o{ BRIDGE_CUSTOMER_ACCOUNT : "customer_key"
-    DIM_ACCOUNT ||--o{ BRIDGE_CUSTOMER_ACCOUNT : "account_key"
+    DIM_CUSTOMER ||--o{ BRIDGE_CUSTOMER_ACCOUNT : customer_key
+    DIM_ACCOUNT ||--o{ BRIDGE_CUSTOMER_ACCOUNT : account_key
+```
